@@ -1,6 +1,6 @@
 # Shakespeare Transformer from Scratch
 
-I built a GPT-style transformer from scratch in TensorFlow and trained it on Shakespeare. No Hugging Face, no pretrained weights, no existing implementations just pure Python and math.
+I built a GPT-style transformer from scratch in TensorFlow and trained it on Shakespeare. No Hugging Face, no pretrained weights, no existing implementations — just pure Python and math.
 
 The model reads text one character at a time, learns the patterns, and generates new text that looks and feels like Shakespeare wrote it.
 
@@ -48,9 +48,8 @@ And I, but not I; am content to my tale,
 And let my dear success it.
 ```
 
-Not perfect, but it learned "parlous", "prithee", "ta'en", "to-morrow", character
-names, dialogue format, and old English rhythm entirely on its own just by reading
-characters.
+Not perfect — but it learned "parlous", "ta'en", "to-morrow", character names,
+dialogue format, and old English rhythm entirely on its own just by reading characters.
 
 ---
 
@@ -66,6 +65,7 @@ shakespeare-transformer/
 ├── model.py            # Full transformer architecture
 ├── train.py            # Training loop
 ├── generate.py         # Text generation
+├── evaluate.py         # Computes val loss and perplexity
 └── requirements.txt    # Dependencies
 ```
 
@@ -82,7 +82,7 @@ Decoder-only transformer — same family as GPT — built entirely from scratch:
 - 256 character context window
 - Causal self-attention with masking so it can't peek at future characters
 - Layer norm + residual connections around every sub-layer
-- Weight-tied output projection (GPT-2 style output layer reuses embedding weights)
+- Weight-tied output projection (GPT-2 style — output layer reuses embedding weights)
 - Top-K + Top-P nucleus sampling during generation
 
 Training details:
@@ -90,7 +90,8 @@ Training details:
 - Optimizer: Adam with linear warmup + cosine decay
 - Gradient clipping at 1.0
 - 10,000 steps, batch size 48, context length 256
-- Final train loss: 0.6486 / val loss: 1.6942
+- Final train loss: 0.6486 / val loss: 1.6882
+- Validation perplexity: 5.41
 - Trained on Apple M4 using tensorflow-metal
 
 ---
@@ -99,7 +100,7 @@ Training details:
 
 ```bash
 git clone https://github.com/Purvak-10/Shakespeare-Transformer-from-scratch.git
-cd Shakespeare-Transformer
+cd Shakespeare-Transformer-from-scratch
 ```
 
 ```bash
@@ -140,9 +141,9 @@ can watch the model improve in real time. Here's what to expect:
 | 1000  | ~1.5       | Real words, basic Shakespeare structure |
 | 3000  | ~1.2       | Sentences starting to form              |
 | 5000  | ~1.1       | Coherent dialogue, character names      |
-| 10000 | ~0.65      | Authentic Shakespeare-style text        |
+| 10000 | ~0.65      | Authentic Shakespeare style text        |
 
-**If training crashes or gets interrupted — just re-run the same command.** The script
+**If training crashes or gets interrupted, just re-run the same command.** The script
 automatically scans the `checkpoints/` folder, finds the latest saved step, and
 resumes from there. No manual changes needed.
 
@@ -153,6 +154,18 @@ resumes from there. No manual changes needed.
 ```bash
 python generate.py
 ```
+
+---
+
+## Evaluating the model
+
+```bash
+python evaluate.py
+```
+
+This computes validation loss and perplexity on the held-out 10% of the dataset.
+Perplexity of 5.41 means the model is effectively choosing between ~5 equally likely
+characters at each step out of 65 possible, it has eliminated ~92% of the uncertainty.
 
 ---
 
@@ -207,7 +220,7 @@ Swap `data/input.txt` with any `.txt` file you want. The tokenizer builds the
 vocabulary automatically from whatever you give it.
 
 If you already trained on Shakespeare and want to switch datasets, delete the old
-checkpoints first the vocabulary will be different and old weights won't load:
+checkpoints first — the vocabulary will be different and old weights won't load:
 
 ```bash
 rm -rf checkpoints/ saved_model/
@@ -221,10 +234,10 @@ python train.py
 Edit these in `train.py`:
 
 ```python
-N_EMBD     = 512   # embedding size
-N_HEADS    = 8     # attention heads: must divide evenly into N_EMBD
-N_LAYERS   = 6     # transformer blocks: more = deeper reasoning
-BLOCK_SIZE = 256   # context window : how many characters the model sees at once
+N_EMBD     = 512   # embedding size — bigger = more expressive
+N_HEADS    = 8     # attention heads — must divide evenly into N_EMBD
+N_LAYERS   = 6     # transformer blocks — more = deeper reasoning
+BLOCK_SIZE = 256   # context window — how many characters the model sees at once
 MAX_STEPS  = 10000 # how long to train
 BATCH_SIZE = 48    # lower this if you run out of memory
 ```
@@ -234,9 +247,9 @@ BATCH_SIZE = 48    # lower this if you run out of memory
 ## Honest expectations
 
 The model learns patterns, not meaning. It knows `ROMEO:` should be followed by
-romantic dialogue because it saw that thousands of times not because it understands
+romantic dialogue because it saw that thousands of times — not because it understands
 love. Individual sentences are mostly coherent but it loses track of logic across
-longer stretches. That's just the nature of a small character level model.
+longer stretches. That's just the nature of a small character-level model.
 
 For a ~25M parameter model trained on 1MB of text on a laptop, the output is
 surprisingly good.
