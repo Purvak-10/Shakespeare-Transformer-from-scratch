@@ -1,4 +1,4 @@
-# Shakespeare Transformer
+# Shakespeare Transformer from Scratch
 
 I built a GPT-style transformer from scratch in TensorFlow and trained it on Shakespeare. No Hugging Face, no pretrained weights, no existing implementations just pure Python and math.
 
@@ -98,7 +98,7 @@ Training details:
 ## Setup
 
 ```bash
-git clone https://github.com/Purvak-10/Shakespeare-Transformer.git
+git clone https://github.com/Purvak-10/Shakespeare-Transformer-from-scratch.git
 cd Shakespeare-Transformer
 ```
 
