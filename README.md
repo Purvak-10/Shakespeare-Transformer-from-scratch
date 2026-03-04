@@ -1,6 +1,6 @@
 # Shakespeare Transformer from Scratch
 
-I built a GPT-style transformer from scratch in TensorFlow and trained it on Shakespeare. No Hugging Face, no pretrained weights, no existing implementations — just pure Python and math.
+I built a GPT-style transformer from scratch in TensorFlow and trained it on Shakespeare. No Hugging Face, no pretrained weights, no existing implementations just pure Python and math.
 
 The model reads text one character at a time, learns the patterns, and generates new text that looks and feels like Shakespeare wrote it.
 
@@ -73,7 +73,7 @@ shakespeare-transformer/
 
 ## Architecture
 
-Decoder-only transformer — same family as GPT — built entirely from scratch:
+Decoder-only transformer same family as GPT built entirely from scratch:
 
 - ~25 million parameters
 - 6 transformer blocks
@@ -82,7 +82,7 @@ Decoder-only transformer — same family as GPT — built entirely from scratch:
 - 256 character context window
 - Causal self-attention with masking so it can't peek at future characters
 - Layer norm + residual connections around every sub-layer
-- Weight-tied output projection (GPT-2 style — output layer reuses embedding weights)
+- Weight-tied output projection (GPT-2 style output layer reuses embedding weights)
 - Top-K + Top-P nucleus sampling during generation
 
 Training details:
@@ -177,7 +177,7 @@ Open `generate.py` and change `SEED_TEXT`:
 SEED_TEXT = "ROMEO:"
 ```
 
-Character names work best — the model saw them thousands of times and has strong
+Character names work best, the model saw them thousands of times and has strong
 patterns to follow:
 
 ```python
@@ -220,7 +220,7 @@ Swap `data/input.txt` with any `.txt` file you want. The tokenizer builds the
 vocabulary automatically from whatever you give it.
 
 If you already trained on Shakespeare and want to switch datasets, delete the old
-checkpoints first — the vocabulary will be different and old weights won't load:
+checkpoints first, the vocabulary will be different and old weights won't load:
 
 ```bash
 rm -rf checkpoints/ saved_model/
@@ -247,7 +247,7 @@ BATCH_SIZE = 48    # lower this if you run out of memory
 ## Honest expectations
 
 The model learns patterns, not meaning. It knows `ROMEO:` should be followed by
-romantic dialogue because it saw that thousands of times — not because it understands
+romantic dialogue because it saw that thousands of times not because it understands
 love. Individual sentences are mostly coherent but it loses track of logic across
 longer stretches. That's just the nature of a small character-level model.
 
