@@ -1,0 +1,9 @@
+logs/
+training.log
+saved_model/
+.venv/
+__pycache__/
+*.pyc
+checkpoints/
+data/
+.DS_Store
